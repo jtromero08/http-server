@@ -5,9 +5,10 @@ const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
     socket.on('data', data => {
+        console.log('mother flame')
         socket.write(data.toString())
+        socket.end();
     })
-    socket.end();
 });
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
