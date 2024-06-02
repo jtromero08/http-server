@@ -6,15 +6,13 @@ const PORT = process.env.PORT || 4221
 const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')[0].split(' ')
-        switch (request[1]) {
-            case '/':
-                socket.write('HTTP/1.1 200 OK\r\n\r\n')
-                break;
-        
-            default:
-                socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
-                break;
-        }
+
+        if(request[1] === '/') 
+            socket.write('HTTP/1.1 200 OK\r\n\r\n')
+        if(request[1].includes('echo')) 
+            socket.write('HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc')
+        if(request[1] !== '/') 
+            socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
 
         socket.end();
     })
