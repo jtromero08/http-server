@@ -1,5 +1,5 @@
 import * as net from 'net';
-import { argv } from 'process';
+import { Status, Methods } from './httpCodes';
 
 const PORT = process.env.PORT || 4221
 
@@ -9,16 +9,16 @@ const server = net.createServer((socket) => {
         const path = request[0].split(' ')
         const echoRequest = path[1].split('/')[2]
         const agentRequest = request[2].split(' ')[1]
-        const httpResponse200WithContent = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:'
+        const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: text/plain\r\nContent-Length:`
 
         if(path[1] === '/') 
-            socket.write('HTTP/1.1 200 OK\r\n\r\n')
+            socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
         if(path[1] === `/echo/${echoRequest}`) 
             socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(path[1] !== '/')
-            socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
+            socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
 
         //tes
         socket.end();
