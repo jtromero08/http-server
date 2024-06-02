@@ -5,10 +5,17 @@ const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
     socket.on('data', data => {
-        const request = data.toString().split('\r\n')
-        const requestFirstLine = request[0].split(' ')
-        console.log("Req: ", requestFirstLine, requestFirstLine[1] === '/')
-        socket.write(requestFirstLine[1])
+        const request = data.toString().split('\r\n')[0].split(' ')
+        switch (request[1]) {
+            case '/':
+                socket.write('HTTP/1.1 200 OK\r\n\r\n')
+                break;
+        
+            default:
+                socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
+                break;
+        }
+
         socket.end();
     })
 });
