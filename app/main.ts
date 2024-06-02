@@ -6,15 +6,15 @@ const PORT = process.env.PORT || 4221
 const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')
-        const agentRequest = request[2].split(' ')[1].split('/')[1]
-        const query = request[0].split(' ')[1].split('/')[2]
         const path = request[0].split(' ')
+        const echoRequest = request[0].split(' ')[1].split('/')[1]
+        const agentRequest = request[2].split(' ')[1].split('/')[1]
         const httpResponse200WithContent = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:'
 
         if(path[1] === '/') 
             socket.write('HTTP/1.1 200 OK\r\n\r\n')
-        if(path[1] === `/echo/${query}`) 
-            socket.write(`${httpResponse200WithContent} ${query.length}\r\n\r\n${query}`)
+        if(path[1] === `/echo/${echoRequest}`) 
+            socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(path[1] !== '/') 
