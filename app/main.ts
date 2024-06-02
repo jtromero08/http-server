@@ -3,7 +3,9 @@ import * as net from 'net';
 const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
-    socket.write(process.argv[0]) 
+    socket.on("data", data => {
+        console.log("This data: ", data)
+    })
     socket.end();
 });
 
