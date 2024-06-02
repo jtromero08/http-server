@@ -1,4 +1,5 @@
 import * as net from 'net';
+import * as fs from 'fs';
 import { Status, Methods } from './httpCodes';
 
 const PORT = process.env.PORT || 4221
@@ -16,6 +17,8 @@ const server = net.createServer((socket) => {
         if(path[1] === `/echo/${echoRequest}`) 
             socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
+            socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+        if(path[1] === `/files/${echoRequest}`)
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(path[1] !== '/')
             socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
