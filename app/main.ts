@@ -10,7 +10,9 @@ const server = net.createServer((socket) => {
 
         if(request[1] === '/') 
             socket.write('HTTP/1.1 200 OK\r\n\r\n')
-        if(request[1].includes('echo')) 
+        if(request[1] === `/echo/${query}`) 
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`)
+        if(request[1] === '/user-agent')
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`)
         if(request[1] !== '/') 
             socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
