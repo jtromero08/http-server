@@ -6,9 +6,9 @@ const PORT = process.env.PORT || 4221
 const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')
-        // [0].split(' ')
         const agentRequest = request[2].split(' ')[1].split('/')[2]
         const query = request[0].split(' ')[1].split('/')[2]
+        const notFound404 = request[0].split(' ')
         const httpResponse200WithContent = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:'
 
         if(request[1] === '/') 
