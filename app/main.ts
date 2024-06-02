@@ -2,11 +2,11 @@ import * as net from 'net';
 
 const PORT = process.env.PORT || 4221
 
-const Luna = process.argv;
-
 const server = net.createServer((socket) => {
-    socket.write(Luna[0] + 'mama')
-    socket.write('HTTP/1.1 200 OK\r\n\r\n')
+    socket.on("data", data => {
+        const request = data.toString().split('\r\n')
+        console.log("request: ", request)
+    })
     socket.end();
 });
 
