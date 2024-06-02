@@ -6,9 +6,9 @@ const PORT = process.env.PORT || 4221
 const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')
-        const requestFirstLine = request[0]
-        console.log("Req: ", requestFirstLine.split(' '))
-        socket.write(requestFirstLine)
+        const requestFirstLine = request[0].split(' ')
+        console.log("Req: ", requestFirstLine, requestFirstLine[1] === '/')
+        socket.write(requestFirstLine[1])
         socket.end();
     })
 });
