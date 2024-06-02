@@ -4,7 +4,7 @@ import { argv } from 'process';
 const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
-    console.log(socket.bytesRead)
+    console.log(socket.address())
     socket.end();
 });
 
