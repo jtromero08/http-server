@@ -7,7 +7,7 @@ const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')
         const requestFirstLine = request[0]
-        console.log("Req: ", requestFirstLine)
+        console.log("Req: ", requestFirstLine.split(' '))
         socket.write(requestFirstLine)
         socket.end();
     })
