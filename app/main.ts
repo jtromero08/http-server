@@ -7,7 +7,7 @@ const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')
         const path = request[0].split(' ')
-        const echoRequest = request[0].split(' ')[1].split('/')[1]
+        const echoRequest = path[1].split('/')[1]
         const agentRequest = request[2].split(' ')[1]
         const httpResponse200WithContent = 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:'
 
