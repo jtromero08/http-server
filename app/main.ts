@@ -20,7 +20,7 @@ const server = net.createServer((socket) => {
         if(path[1] !== '/')
             socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
 
-        //test
+        //tes
         socket.end();
     })
 });
