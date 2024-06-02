@@ -14,9 +14,9 @@ const server = net.createServer((socket) => {
         if(path[1] === '/') 
             socket.write('HTTP/1.1 200 OK\r\n\r\n')
         if(path[1] === `/echo/${echoRequest}`) 
-            socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
+            socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
-            socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+            socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n${agentRequest}`)
         if(path[1] !== '/')
             socket.write('HTTP/1.1 404 Not Found\r\n\r\n')
 
