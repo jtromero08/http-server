@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
     socket.on("data", data => {
-        socket.write(argv[0])
+        socket.write(data)
     })
     socket.end();
 });
