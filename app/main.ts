@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
     socket.on('data', data => {
-        console.log('mother flame')
+        console.log("Data: ", data.toString())
         socket.write(data.toString())
         socket.end();
     })
