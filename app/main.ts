@@ -1,6 +1,9 @@
 import * as net from 'net';
 
+const PORT = process.env.PORT || 4221
+
 const server = net.createServer((socket) => {
+    socket.write(process.argv[0]) 
     socket.end();
 });
 
@@ -8,7 +11,6 @@ const server = net.createServer((socket) => {
 console.log("Logs from your program will appear here!");
 
 // Uncomment this to pass the first stage
-server.listen(4221, 'localhost', () => {
+server.listen(PORT as number, 'localhost', () => {
     console.log('Server is running on port 4221');
-    console.log(performance.getEntries()[0].name)
 });
