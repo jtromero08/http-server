@@ -1,11 +1,11 @@
 import * as net from 'net';
+import { argv } from 'process';
 
 const PORT = process.env.PORT || 4221
 
 const server = net.createServer((socket) => {
     socket.on("data", data => {
-        const request = data.toString().split('\r\n')
-        //console.log("request: ", request)
+        socket.write(argv[0])
     })
     socket.end();
 });
