@@ -17,8 +17,8 @@ const server = net.createServer((socket) => {
             application: 'application/octet-stream'
         }
         const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
-        const statusCodeRequest = method === Methods.GET ? Status[200].code.toString() : Status[201].code.toString()
-        const httpResponse200sWithContent = `HTTP/1.1 ${statusCodeRequest} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
+        const statusCodeRequest = method === Methods.GET ? Status[200] : Status[201]
+        const httpResponse200sWithContent = `HTTP/1.1 ${statusCodeRequest.code} ${statusCodeRequest.message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
         const fileName = `${process.argv[3]}${echoRequest}`
 
         if(path[1] === '/') 
