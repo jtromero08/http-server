@@ -27,7 +27,9 @@ const server = net.createServer((socket) => {
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(path[1] === `/files/${echoRequest}`) {
+            console.log('Enter to file condition')
             try {
+                console.log('In the trycatch')
                 const fileContent = fs.readFileSync(fileName)
                 if(method === Methods.GET) {
                     socket.write(
