@@ -28,7 +28,7 @@ const server = net.createServer((socket) => {
         if(path[1] === `/files/${echoRequest}`) {
             try {
                 const fileContent = fs.readFileSync(fileName)
-                socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${echoRequest}`)
+                socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`)
             } catch (error) {
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
             }
