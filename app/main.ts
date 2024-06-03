@@ -18,7 +18,6 @@ const server = net.createServer((socket) => {
         const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
         const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
         const fileName = `${process.argv[3]}${echoRequest}`
-        const fileContent = fs.readFileSync(fileName)
 
         if(path[1] === '/') 
             socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
@@ -26,10 +25,14 @@ const server = net.createServer((socket) => {
             socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
-        if(path[1] === `/files/${echoRequest}`)
-            socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${echoRequest}`)
-        else 
-            socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n${echoRequest}`)
+        if(path[1] === `/files/${echoRequest}`) {
+            try {
+                const fileContent = fs.readFileSync(fileName)
+                socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${echoRequest}`)
+            } catch (error) {
+                socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
+            }
+        }
         if(path[1] !== '/')
             socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
 
