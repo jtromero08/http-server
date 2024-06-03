@@ -26,27 +26,24 @@ const server = net.createServer((socket) => {
             socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
-        if(path[1] === `/files/${echoRequest}`) {
+        if(path[1] === `/files/${echoRequest}` && method === Methods.GET) {
             console.log('Enter to file condition')
             try {
-                console.log('In the trycatch')
-                console.log('With the method: ', method)
                 const fileContent = fs.readFileSync(fileName)
                 if(method === Methods.GET) {
                     socket.write(
                         `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
                     );
                 }
-                if(method.toString() === Methods.POST) {
-                    console.log('Enter to the post condition')
-                    socket.write(
-                        `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
-                    )
-                }
             } catch (error) {
-                console.log('error: ', error)
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
             }
+        }
+        if(method === Methods.POST) {
+            console.log('Enter to the post condition') 
+            socket.write(
+                `${httpResponse200WithContent} ${request[2].split(' ')[1].toString()}\r\n\r\n${echoRequest}`
+            )
         }
         if(path[1] !== '/')
             socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
