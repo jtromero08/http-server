@@ -17,15 +17,16 @@ const server = net.createServer((socket) => {
             application: 'application/octet-stream'
         }
         const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
-        const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
+        const statusCodeRequest = method === Methods.GET ? Status[200].code.toString() : Status[201].code.toString()
+        const httpResponse200sWithContent = `HTTP/1.1 ${statusCodeRequest} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
         const fileName = `${process.argv[3]}${echoRequest}`
 
         if(path[1] === '/') 
             socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
         if(path[1] === `/echo/${echoRequest}`) 
-            socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
+            socket.write(`${httpResponse200sWithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
-            socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+            socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
 
         // Read File
         if(path[1] === `/files/${echoRequest}` && method === Methods.GET) {
@@ -33,7 +34,7 @@ const server = net.createServer((socket) => {
             try {
                 const fileContent = fs.readFileSync(fileName)
                 socket.write(
-                    `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
+                    `${httpResponse200sWithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
                 );
             } catch (error) {
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
@@ -46,7 +47,7 @@ const server = net.createServer((socket) => {
             try {
                 const fileContent = fs.writeFileSync(fileName, request[3])
                 socket.write(
-                    `${httpResponse200WithContent} ${request[3].length}\r\n\r\n${request[3]}`
+                    `${httpResponse200sWithContent} ${request[3].length}\r\n\r\n${request[3]}`
                 );
             } catch (error) {
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
