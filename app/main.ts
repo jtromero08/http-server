@@ -10,7 +10,12 @@ const server = net.createServer((socket) => {
         const path = request[0].split(' ')
         const echoRequest = path[1].split('/')[2]
         const agentRequest = request[2].split(' ')[1]
-        const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: text/plain\r\nContent-Length:`
+        const ContentTypes = {
+            text: 'text/plain',
+            application: 'application/octet-stream'
+        }
+        const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
+        const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
 
         if(path[1] === '/') 
             socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
