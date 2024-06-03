@@ -30,7 +30,6 @@ const server = net.createServer((socket) => {
 
         // Read File
         if(path[1] === `/files/${echoRequest}` && method === Methods.GET) {
-            console.log('Enter to file condition')
             try {
                 const fileContent = fs.readFileSync(fileName)
                 socket.write(
@@ -43,12 +42,10 @@ const server = net.createServer((socket) => {
 
         // Write File
         if(path[1] === `/files/${echoRequest}` && method === Methods.POST) {
-            console.log('Enter to file condition')
             try {
-                console.log(request)
-                const fileContent = fs.writeFileSync(fileName, request[3])
+                const fileContent = fs.writeFileSync(fileName, request[4])
                 socket.write(
-                    `${httpResponse200sWithContent} ${request[3].length}\r\n\r\n${request[3]}`
+                    `${httpResponse200sWithContent} ${request[4].length}\r\n\r\n${request[4]}`
                 );
             } catch (error) {
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
