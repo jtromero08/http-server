@@ -30,6 +30,7 @@ const server = net.createServer((socket) => {
             console.log('Enter to file condition')
             try {
                 console.log('In the trycatch')
+                console.log('With the method: ', method)
                 const fileContent = fs.readFileSync(fileName)
                 if(method === Methods.GET) {
                     socket.write(
@@ -37,6 +38,7 @@ const server = net.createServer((socket) => {
                     );
                 }
                 if(method === Methods.POST) {
+                    
                     socket.write(
                         `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
                     )
