@@ -15,6 +15,10 @@ export const Status = {
         code: 200,
         message: "OK"
     },
+    201: {
+        code: 201,
+        message: "Created"
+    },
     404: {
         code: 404,
         message: "Not Found"

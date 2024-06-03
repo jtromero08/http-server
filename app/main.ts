@@ -9,6 +9,7 @@ const server = net.createServer((socket) => {
     socket.on('data', data => {
         const request = data.toString().split('\r\n')
         const path = request[0].split(' ')
+        const method = path[0];
         const echoRequest = path[1].split('/')[2]
         const agentRequest = request[2].split(' ')[1]
         const ContentTypes = {
@@ -28,7 +29,16 @@ const server = net.createServer((socket) => {
         if(path[1] === `/files/${echoRequest}`) {
             try {
                 const fileContent = fs.readFileSync(fileName)
-                socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`)
+                if(method === Methods.GET) {
+                    socket.write(
+                        `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
+                    );
+                }
+                if(method === Methods.POST) {
+                    socket.write(
+                        `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
+                    )
+                }
             } catch (error) {
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
             }
@@ -36,7 +46,7 @@ const server = net.createServer((socket) => {
         if(path[1] !== '/')
             socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
 
-        //te
+        // te
         socket.end();
     })
 });
