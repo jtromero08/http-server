@@ -26,24 +26,31 @@ const server = net.createServer((socket) => {
             socket.write(`${httpResponse200WithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+
+        // Read File
         if(path[1] === `/files/${echoRequest}` && method === Methods.GET) {
             console.log('Enter to file condition')
             try {
                 const fileContent = fs.readFileSync(fileName)
-                if(method === Methods.GET) {
-                    socket.write(
-                        `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
-                    );
-                }
+                socket.write(
+                    `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
+                );
             } catch (error) {
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
             }
         }
-        if(method === Methods.POST) {
-            console.log('Enter to the post condition') 
-            socket.write(
-                `${httpResponse200WithContent} ${request[2].split(' ')[1].toString()}\r\n\r\n${echoRequest}`
-            )
+
+        // Write File
+        if(path[1] === `/files/${echoRequest}` && method === Methods.POST) {
+            console.log('Enter to file condition')
+            try {
+                const fileContent = fs.writeFileSync(fileName, request[3])
+                socket.write(
+                    `${httpResponse200WithContent} ${request[3].length}\r\n\r\n${request[3]}`
+                );
+            } catch (error) {
+                socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
+            }
         }
         if(path[1] !== '/')
             socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
