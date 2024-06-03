@@ -38,7 +38,7 @@ const server = net.createServer((socket) => {
                     );
                 }
                 if(method === Methods.POST) {
-                    
+                    console.log('Enter to the post condition')
                     socket.write(
                         `${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
                     )
