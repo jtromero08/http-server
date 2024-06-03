@@ -16,8 +16,9 @@ const server = net.createServer((socket) => {
         }
         const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
         const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
-        console.log(process.argv[3] + echoRequest)
-        //const fileContent = fs.readFileSync('/tmp/data/codecrafters.io/http-server-tester/')
+        const fileName = `${process.argv[3]}${echoRequest}`
+        console.log('This file name: ', fileName)
+        const fileContent = fs.readFileSync(fileName)
 
         if(path[1] === '/') 
             socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
