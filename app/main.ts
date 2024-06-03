@@ -18,9 +18,9 @@ const server = net.createServer((socket) => {
         const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
         const httpResponse200WithContent = `HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
         const fileName = `${process.argv[3]}${echoRequest}`
-        console.log('This file type: ', fileName)
+        console.log('This file type: ', pathFufu.extname(fileName))
         const fileContent = fs.readFileSync(fileName)
-        console.log('This file content: ', pathFufu.extname(fileContent.toString()))
+        console.log('This file content: ', fileContent.toString())
 
         if(path[1] === '/') 
             socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
