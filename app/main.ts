@@ -27,7 +27,7 @@ const server = net.createServer((socket) => {
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200WithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(path[1] === `/files/${echoRequest}`)
-            socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n${echoRequest}`)
+            socket.write(`${httpResponse200WithContent} ${fileContent.toString().length}\r\n\r\n`)
         if(path[1] !== '/')
             socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
 
