@@ -45,6 +45,7 @@ const server = net.createServer((socket) => {
         if(path[1] === `/files/${echoRequest}` && method === Methods.POST) {
             console.log('Enter to file condition')
             try {
+                console.log(request[3])
                 const fileContent = fs.writeFileSync(fileName, request[3])
                 socket.write(
                     `${httpResponse200sWithContent} ${request[3].length}\r\n\r\n${request[3]}`
