@@ -44,6 +44,7 @@ const server = net.createServer((socket) => {
                     )
                 }
             } catch (error) {
+                console.log('error: ', error)
                 socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
             }
         }
