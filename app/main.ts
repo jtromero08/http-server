@@ -24,19 +24,17 @@ const server = net.createServer((socket) => {
 
         if(path[1] === '/') 
             socket.write(`HTTP/1.1 ${Status[200].code.toString()} ${Status[200].message}\r\n\r\n`)
-        if(path[1] === `/echo/${echoRequest}`) 
+        if(path[1] === `/echo/${echoRequest}` && acceptedEncoding[0] !== 'Accept-Encoding:' ) 
             socket.write(`${httpResponse200sWithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(acceptedEncoding[0] === 'Accept-Encoding:') {
-            console.log(acceptedEncoding[1])
             if(acceptedEncoding[1] !== 'invalid-encoding') {
                 socket.write(
                     `HTTP/1.1 ${statusCodeRequest.code} ${statusCodeRequest.message}\r\nContent-Encoding: ${acceptedEncoding[1]}\r\nContent-Type: ${contentType}\r\nContent-Length: ${echoRequest.length}\r\n\r\n${echoRequest}`
                 )
             } else {
-                //socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
-                console.log('im here here')
+                socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
             }
         }
 
