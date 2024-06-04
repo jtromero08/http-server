@@ -12,7 +12,7 @@ const server = net.createServer((socket) => {
         const method = path[0];
         const echoRequest = path[1].split('/')[2]
         const agentRequest = request[2].split(' ')[1]
-        const acceptedEncoding = request[3].split(' ')
+        const acceptedEncoding = request[2].split(' ')
         const ContentTypes = {
             text: 'text/plain',
             application: 'application/octet-stream'
