@@ -12,6 +12,7 @@ const server = net.createServer((socket) => {
         const method = path[0];
         const echoRequest = path[1].split('/')[2]
         const agentRequest = request[2].split(' ')[1]
+        const acceptedEncoding = request[3].split(' ')
         const ContentTypes = {
             text: 'text/plain',
             application: 'application/octet-stream'
@@ -27,6 +28,16 @@ const server = net.createServer((socket) => {
             socket.write(`${httpResponse200sWithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+        if(acceptedEncoding[0] === 'Accept-Encoding:') {
+            if(acceptedEncoding[1] !== 'invalid-encoding') {
+                socket.write(
+                    `HTTP/1.1 ${statusCodeRequest.code} ${statusCodeRequest.message}\r\nContent-Encoding: ${acceptedEncoding[1]}\r\nContent-Type: ${contentType}\r\nContent-Length: ${echoRequest.length}\r\n\r\n${echoRequest}`
+                )
+            } else {
+                socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+
+            }
+        }
 
         // Read File
         if(path[1] === `/files/${echoRequest}` && method === Methods.GET) {
