@@ -63,7 +63,6 @@ const server = net.createServer((socket) => {
         if(path[1] !== '/')
             socket.write(httpResponse404)
 
-        // te
         socket.end();
     })
 });
