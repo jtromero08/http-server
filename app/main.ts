@@ -27,7 +27,7 @@ const server = net.createServer((socket) => {
         if(path[1] === '/user-agent')
             socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
         if(path[1] === `/echo/${echoRequest}`) {
-            if(acceptedEncoding.includes('gzip,')) {
+            if(acceptedEncoding.includes('gzip,') || acceptedEncoding[1] === 'gzip') {
                 socket.write(
                     `HTTP/1.1 ${statusCodeRequest.code} ${statusCodeRequest.message}\r\nContent-Encoding: gzip\r\nContent-Type: ${contentType}\r\nContent-Length: ${echoRequest.length}\r\n\r\n${echoRequest}`
                 )
