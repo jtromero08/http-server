@@ -34,7 +34,7 @@ const server = net.createServer((socket) => {
                     `HTTP/1.1 ${statusCodeRequest.code} ${statusCodeRequest.message}\r\nContent-Encoding: gzip\r\nContent-Type: ${contentType}\r\nContent-Length: ${echoRequest.length}\r\n\r\n${echoRequest}`
                 )
             } else {
-                socket.write(`${httpResponse200sWithContent} ${agentRequest.length}\r\n\r\n${agentRequest}`)
+                socket.write(`${httpResponse200sWithContent} ${echoRequest.length}\r\n\r\n${echoRequest}`)
             }
         }
 
