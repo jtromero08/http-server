@@ -20,6 +20,7 @@ const server = net.createServer((socket) => {
         const contentType = (path[1]===`/files/${echoRequest}`) ? ContentTypes.application : ContentTypes.text
         const statusCodeRequest = method === Methods.GET ? Status[200] : Status[201]
         const httpResponse200sWithContent = `HTTP/1.1 ${statusCodeRequest.code} ${statusCodeRequest.message}\r\nContent-Type: ${contentType}\r\nContent-Length:`
+        const httpResponse404 = `HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`;
         const fileName = `${process.argv[3]}${echoRequest}`
 
         if(path[1] === '/') 
@@ -44,7 +45,7 @@ const server = net.createServer((socket) => {
                     `${httpResponse200sWithContent} ${fileContent.toString().length}\r\n\r\n${fileContent.toString()}`
                 );
             } catch (error) {
-                socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
+                socket.write(httpResponse404)
             }
         }
 
@@ -56,11 +57,11 @@ const server = net.createServer((socket) => {
                     `${httpResponse200sWithContent} ${request[4].length}\r\n\r\n${request[4]}`
                 );
             } catch (error) {
-                socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
+                socket.write(httpResponse404)
             }
         }
         if(path[1] !== '/')
-            socket.write(`HTTP/1.1 ${Status[404].code.toString()} ${Status[404].message}\r\n\r\n`)
+            socket.write(httpResponse404)
 
         // te
         socket.end();
